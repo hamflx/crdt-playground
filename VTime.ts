@@ -54,7 +54,7 @@ export class VTime {
           return VTimeOrd.Cc;
         }
 
-        return VTimeOrd.Eq;
+        return ord;
       },
       VTimeOrd.Eq,
     );
