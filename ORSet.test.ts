@@ -8,50 +8,50 @@ const helloJavaScript = "hello javascript";
 const helloRust = "hello rust";
 
 Deno.test("ORSet basic", () => {
-  const register = ORSet.empty<string>();
-  register.add(helloJavaScript);
-  assertArrayIncludes([...register.value], [helloJavaScript]);
+  const set = ORSet.empty<string>();
+  set.add(helloJavaScript);
+  assertArrayIncludes([...set.value], [helloJavaScript]);
 });
 
 Deno.test("ORSet remove", () => {
-  const register = ORSet.empty<string>();
-  register.remove(helloJavaScript);
-  register.add(helloJavaScript);
-  register.add(helloRust);
-  register.remove(helloJavaScript);
-  register.remove(helloJavaScript);
-  assertEquals(register.value.size, 1);
-  assertArrayIncludes([...register.value], [helloRust]);
-  register.add(helloJavaScript);
-  assertEquals(register.value.size, 2);
-  assertArrayIncludes([...register.value], [helloJavaScript, helloRust]);
+  const set = ORSet.empty<string>();
+  set.remove(helloJavaScript);
+  set.add(helloJavaScript);
+  set.add(helloRust);
+  set.remove(helloJavaScript);
+  set.remove(helloJavaScript);
+  assertEquals(set.value.size, 1);
+  assertArrayIncludes([...set.value], [helloRust]);
+  set.add(helloJavaScript);
+  assertEquals(set.value.size, 2);
+  assertArrayIncludes([...set.value], [helloJavaScript, helloRust]);
 });
 
 Deno.test("ORSet add first", () => {
-  const registerA = ORSet.empty<string>();
-  const registerB = ORSet.empty<string>();
-  registerA.add(helloJavaScript);
-  registerB.add(helloJavaScript);
-  registerB.remove(helloJavaScript);
-  registerA.merge(registerB);
-  assertEquals(registerA.value.size, 1);
-  assertEquals(registerB.value.size, 0);
-  assertArrayIncludes([...registerA.value], [helloJavaScript]);
+  const setA = ORSet.empty<string>();
+  const setB = ORSet.empty<string>();
+  setA.add(helloJavaScript);
+  setB.add(helloJavaScript);
+  setB.remove(helloJavaScript);
+  setA.merge(setB);
+  assertEquals(setA.value.size, 1);
+  assertEquals(setB.value.size, 0);
+  assertArrayIncludes([...setA.value], [helloJavaScript]);
 });
 
 Deno.test("ORSet merge", () => {
-  const registerA = ORSet.empty<string>();
-  const registerB = ORSet.empty<string>();
+  const setA = ORSet.empty<string>();
+  const setB = ORSet.empty<string>();
 
-  registerA.add(helloJavaScript);
-  registerB.add(helloRust);
-  registerA.merge(registerB);
-  assertEquals(registerA.value.size, 2);
-  assertArrayIncludes([...registerA.value], [helloJavaScript, helloRust]);
+  setA.add(helloJavaScript);
+  setB.add(helloRust);
+  setA.merge(setB);
+  assertEquals(setA.value.size, 2);
+  assertArrayIncludes([...setA.value], [helloJavaScript, helloRust]);
 
-  registerA.merge(registerB.remove(helloRust));
-  assertEquals(registerA.value.size, 1);
+  setA.merge(setB.remove(helloRust));
+  assertEquals(setA.value.size, 1);
 
-  registerA.merge(registerB.merge(registerA).remove(helloJavaScript));
-  assertEquals(registerA.value.size, 0);
+  setA.merge(setB.merge(setA).remove(helloJavaScript));
+  assertEquals(setA.value.size, 0);
 });
